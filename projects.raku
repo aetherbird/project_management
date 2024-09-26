@@ -16,6 +16,11 @@ if $arg_counter == 0 {
 } 
 elsif $arg_counter == 1 {
     say "directory argument provided\n\n";
+    my $dir_arg = @*ARGS[0];
+    my $dirparse = dir($dir_arg).join(' ');                                                                 
+                                                                                                    
+    $dirparse ~~ s:g/(\S+)\s/$0\n/;                                                                 
+    say $dirparse;
 }
 elsif $arg_counter == 2 {
     say "2 arguments provided\n\n";
