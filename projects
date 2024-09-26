@@ -1,0 +1,62 @@
+#!/bin/bash
+
+if [ "$1" = "-h" ]||[ "$1" = "--help" ]||[ "$1" = "help" ]; then
+    echo "Usage: projects [OPTION] [DIRECTORY]
+This script provides a wrapper for the Raku projects program
+It also manages filesystem operations on the OS level
+
+    -h, --help Display this help message and exit."
+    exit 1
+fi
+
+if [ -n "$2" ]; then
+    command_argument=$1
+    directory_argument=$2
+
+elif [ -n "$1" ]; then
+    directory_argument=$1
+fi
+
+delete_project() {
+    echo "This is currently an undefined operation."
+}
+
+project_operation() {
+    echo "~~~~~~~~~~~~~~~~ $current_project ~~~~~~~~~~~~~~~~"
+    echo "~~~~~~~~~~~~~~~~ $(echo $current_project | sed 's/./~/g') ~~~~~~~~~~~~~~~~"
+    cd $current_project
+    ls -lAhtr
+    git status
+}
+
+create_new_project() {
+    echo "~~~~~~~~~~~~~~~~ $new_project ~~~~~~~~~~~~~~~~"
+    echo "~~~~~~~~~~~~~~~~ $(echo $new_project | sed 's/./~/g') ~~~~~~~~~~~~~~~~"
+    mkdir $new_project
+    cd $new_project
+    git init .
+}
+
+vanilla_function() {
+    echo -e "No directory or command arguments provided.\n"
+    echo "Current projects in the dir:"
+    echo $(ls -l | awk '{print $0}')
+}
+
+if [ -z "$1" ]; then
+    vanilla_function
+fi
+
+cd /jjbasket/projects/
+
+if [ -n "$directory_argument" ]; then
+    echo "Project $directory_argument provided."
+    if [ -d $1 ]; then 
+        current_project=$1
+        project_operation
+    else
+        new_project=$1
+        create_new_project
+    fi
+fi
+
